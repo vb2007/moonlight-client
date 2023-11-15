@@ -10,6 +10,7 @@ import moonlight.events.Event;
 import moonlight.events.listeners.EventKey;
 import moonlight.modules.Module;
 import moonlight.modules.Module.Category;
+import moonlight.modules.combat.KillAura;
 import moonlight.modules.movement.*;
 import moonlight.modules.player.*;
 import moonlight.modules.render.*;
@@ -34,6 +35,7 @@ public class Client {
 		modules.add(new Sprint());
 		modules.add(new Fullbright());
 		modules.add(new NoFall());
+		modules.add(new KillAura());
 	}
 	
 	public static void onEvent(Event e) {
