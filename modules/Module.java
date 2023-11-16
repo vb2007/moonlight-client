@@ -1,6 +1,11 @@
 package moonlight.modules;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import moonlight.events.Event;
+import moonlight.settings.Setting;
 import net.minecraft.client.Minecraft;
 
 public class Module {
@@ -11,10 +16,16 @@ public class Module {
 	public Category category;
 	public Minecraft mc = Minecraft.getMinecraft();
 	
+	public List<Setting> settings = new ArrayList<Setting>();
+	
 	public Module(String name, int key, Category c) {
 		this.name = name;
 		this.keyCode = key;
 		this.category = c;
+	}
+	
+	public void addSettings(Setting... settings) {
+		this.settings.addAll(Arrays.asList(settings));
 	}
 	
 	public boolean isEnabled() {

@@ -10,19 +10,30 @@ import moonlight.events.Event;
 import moonlight.events.listeners.EventMotion;
 import moonlight.events.listeners.EventUpdate;
 import moonlight.modules.Module;
+import moonlight.settings.BooleanSetting;
+import moonlight.settings.ModeSetting;
+import moonlight.settings.NumberSetting;
 import moonlight.util.Timer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.network.play.client.C02PacketUseEntity.Action;
+import net.minecraft.network.play.client.C0APacketAnimation;
 
 public class KillAura extends Module {
 
 	public Timer timer = new Timer();
+	//beállítás Number/Boolean/ModeSetting.java alapján:
+	//pl.: ("Beállítás neve", alapérték, minimum érték, maximum érték, változás mérete)
+	public NumberSetting range = new NumberSetting("Range", 4, 1, 6, 0.1);
+	public NumberSetting aps = new NumberSetting("APS", 10, 1, 20, 1);
+	public BooleanSetting noSwing = new BooleanSetting("NoSwing", false);
+	public ModeSetting test = new ModeSetting("Test", "One", "One", "Two", "Three");
 	
 	public KillAura() {
 		super("KillAura", Keyboard.KEY_R, Category.COMBAT);
+		this.addSettings(range, aps, noSwing, test);
 	}
 	
 	public void onEnable() {
@@ -43,7 +54,7 @@ public class KillAura extends Module {
 				List<EntityLivingBase> targets = (List<EntityLivingBase>) mc.theWorld.loadedEntityList.stream().filter(EntityLivingBase.class::isInstance).collect(Collectors.toList());
 				
 				//shortens the list to entities that are closer to the player than 4 blocks
-				targets = targets.stream().filter(entity -> entity.getDistanceToEntity(mc.thePlayer) < 4 && entity != mc.thePlayer && !entity.isDead && entity.getHealth() > 0).collect(Collectors.toList());
+				targets = targets.stream().filter(entity -> entity.getDistanceToEntity(mc.thePlayer) < range.getValue() && entity != mc.thePlayer && !entity.isDead && entity.getHealth() > 0).collect(Collectors.toList());
 				
 				targets.sort(Comparator.comparingDouble(entity -> ((EntityLivingBase)entity).getDistanceToEntity(mc.thePlayer)));
 				
@@ -63,9 +74,14 @@ public class KillAura extends Module {
 					event.setYaw(getRotations(target)[0]);
 					event.setPitch(getRotations(target)[1]);
 					
-					if(timer.hasTimeElapsed(1000 / 10, true)) {
-						//TODO: NoSwing beállítás / modul
-						mc.thePlayer.swingItem();
+					if(timer.hasTimeElapsed((long) (1000 / aps.getValue()), true)) {
+						//TODO: NoSwing beállítás / modul (készül)
+						if(noSwing.isEnabled()) {
+							mc.thePlayer.sendQueue.addToSendQueue(new C0APacketAnimation());
+						}
+						else {
+							mc.thePlayer.swingItem();
+						}
 						mc.thePlayer.sendQueue.addToSendQueue(new C02PacketUseEntity(target, Action.ATTACK));
 					}
 				}
