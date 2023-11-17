@@ -16,6 +16,8 @@ public class Module {
 	public Category category;
 	public Minecraft mc = Minecraft.getMinecraft();
 	
+	public boolean expanded;
+	public int index;
 	public List<Setting> settings = new ArrayList<Setting>();
 	
 	public Module(String name, int key, Category c) {

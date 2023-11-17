@@ -10,6 +10,8 @@ import moonlight.events.listeners.EventKey;
 import moonlight.events.listeners.EventRenderGUI;
 import moonlight.events.listeners.EventUpdate;
 import moonlight.modules.Module;
+import moonlight.settings.BooleanSetting;
+import moonlight.settings.Setting;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 
@@ -27,12 +29,14 @@ public class TabGUI extends Module {
 			FontRenderer fr = mc.fontRendererObj;
 			
 			//TODO: A szélességet (80) kicserélni a leghosszab kategórianév +x értékre
+			//átlátszó menü
 			Gui.drawRect(5, 30.5, 70, 30 + Module.Category.values().length * 16 + 1.5, 0x90000000);
-			Gui.drawRect(7, 33 + currentTab * 16, 7 + 61, 33 + currentTab * 16 + 12, -1);
+			//modulok az átlátszó menüben
+			Gui.drawRect(5, 30.5f + currentTab * 16, 7 + 61 + 2, 33 + currentTab * 16 + 12 + 2.5f, -1);
 			
 			int count = 0;
 			for(Category c : Module.Category.values()) {
-				fr.drawStringWithShadow(c.name, 11, 34.5 + count*16, -1);
+				fr.drawStringWithShadow(c.name, 11, 34.5 + count * 16, -1);
 				
 				count++;
 			}
@@ -46,14 +50,31 @@ public class TabGUI extends Module {
 				}
 				
 				Gui.drawRect(70, 30.5, 70 + 68, 30 + modules.size() * 16 + 1.5, 0x90000000);
-				Gui.drawRect(70, 33 + category.moduleIndex * 16, 7 + 61 + 68, 33 + category.moduleIndex * 16 + 12, -1);
+				Gui.drawRect(70, 30.5f + category.moduleIndex * 16, 7 + 61 + 70, 33 + category.moduleIndex * 16 + 12 + 2.5f, -1);
 				
 				count = 0;
 				for(Module m : modules) {
-					fr.drawStringWithShadow(m.name, 73, 34.5 + count*16, -1);
+					fr.drawStringWithShadow(m.name, 73, 34.5 + count * 16, -1);
+
+					if(count == category.moduleIndex && m.expanded && !m.equals("Tabgui")) {
+
+						Gui.drawRect(70 + 68, 30.5, 70 + 68 + 68, 30 + m.settings.size() * 16 + 1.5, 0x90000000);
+						Gui.drawRect(70 + 68, 30.5f + m.index * 16, 7 + 61 + 70 + 68, 33 + m.index * 16 + 12 + 2.5f, -1);
+						
+						int index = 0;
+						for(Setting setting : m.settings) {
+							if(setting instanceof BooleanSetting) {
+								BooleanSetting bool = (BooleanSetting) setting;
+								fr.drawStringWithShadow(setting.name + ": " + (bool.enabled ? "Enabled" : "Disabled"), 73 + 68, 34.5 + index * 16, -1);
+							}
+							index++;
+						}
+					}
 					
 					count++;
 				}
+				
+				
 			}
 		}
 		
@@ -66,11 +87,22 @@ public class TabGUI extends Module {
 			
 			if(code == Keyboard.KEY_UP) {
 				if(expanded) {
-					if(category.moduleIndex <= 0) {
-						category.moduleIndex = modules.size() - 1;
+					if(expanded && !modules.isEmpty() && modules.get(category.moduleIndex).expanded) {
+						Module module = modules.get(category.moduleIndex);
+						if(module.index <= 0) {
+							module.index = module.settings.size() - 1;
+						}
+						else {
+							module.index--;					
+						}
 					}
 					else {
-						category.moduleIndex--;					
+						if(category.moduleIndex <= 0) {
+							category.moduleIndex = modules.size() - 1;
+						}
+						else {
+							category.moduleIndex--;					
+						}
 					}
 				}
 				else {
@@ -85,11 +117,22 @@ public class TabGUI extends Module {
 			
 			if(code == Keyboard.KEY_DOWN) {
 				if(expanded) {
-					if(category.moduleIndex >= modules.size() - 1) {
-						category.moduleIndex = 0;
+					if(expanded && !modules.isEmpty() && modules.get(category.moduleIndex).expanded) {
+						Module module = modules.get(category.moduleIndex);
+						if(module.index >= module.settings.size() - 1) {
+							module.index = 0;
+						}
+						else {
+							module.index++;
+						}
 					}
 					else {
-						category.moduleIndex++;
+						if(category.moduleIndex >= modules.size() - 1) {
+							category.moduleIndex = 0;
+						}
+						else {
+							category.moduleIndex++;
+						}
 					}
 				}
 				else {
@@ -105,8 +148,14 @@ public class TabGUI extends Module {
 			if(code == Keyboard.KEY_RIGHT) {
 				if(expanded && modules.size() != 0) {
 					Module module = modules.get(category.moduleIndex);
-					if(!module.name.equals("TabGUI")) {
-						module.toggle();	
+
+					if(expanded && !modules.isEmpty() && modules.get(category.moduleIndex).expanded) {
+						
+					}
+					else {
+						if(!module.name.equals("TabGUI")) {
+							module.toggle();	
+						}
 					}
 				}
 				else {
@@ -115,7 +164,21 @@ public class TabGUI extends Module {
 			}
 			
 			if(code == Keyboard.KEY_LEFT) {
-				expanded = false;
+				if(expanded && !modules.isEmpty() && modules.get(category.moduleIndex).expanded) {
+					modules.get(category.moduleIndex).expanded = false;
+				}
+				else {
+					expanded = false;					
+				}
+			}
+			
+			if(code == Keyboard.KEY_RETURN) {
+				if(expanded && modules.size() != 0) {
+					Module module = modules.get(category.moduleIndex);
+					if(!module.expanded) {
+						module.expanded = true;
+					}
+				}
 			}
 		}
 	}
