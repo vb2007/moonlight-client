@@ -11,6 +11,8 @@ import moonlight.events.listeners.EventRenderGUI;
 import moonlight.events.listeners.EventUpdate;
 import moonlight.modules.Module;
 import moonlight.settings.BooleanSetting;
+import moonlight.settings.ModeSetting;
+import moonlight.settings.NumberSetting;
 import moonlight.settings.Setting;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -28,11 +30,14 @@ public class TabGUI extends Module {
 		if(e instanceof EventRenderGUI) {
 			FontRenderer fr = mc.fontRendererObj;
 			
+			int primaryColor = -1,
+				secondaryColor = 0x00AA00AA;
+			
 			//TODO: A szélességet (80) kicserélni a leghosszab kategórianév +x értékre
 			//átlátszó menü
 			Gui.drawRect(5, 30.5, 70, 30 + Module.Category.values().length * 16 + 1.5, 0x90000000);
 			//modulok az átlátszó menüben
-			Gui.drawRect(5, 30.5f + currentTab * 16, 7 + 61 + 2, 33 + currentTab * 16 + 12 + 2.5f, -1);
+			Gui.drawRect(5, 30.5f + currentTab * 16, 7 + 61 + 2, 33 + currentTab * 16 + 12 + 2.5f, primaryColor);
 			
 			int count = 0;
 			for(Category c : Module.Category.values()) {
@@ -50,23 +55,61 @@ public class TabGUI extends Module {
 				}
 				
 				Gui.drawRect(70, 30.5, 70 + 68, 30 + modules.size() * 16 + 1.5, 0x90000000);
-				Gui.drawRect(70, 30.5f + category.moduleIndex * 16, 7 + 61 + 70, 33 + category.moduleIndex * 16 + 12 + 2.5f, -1);
+				Gui.drawRect(70, 30.5f + category.moduleIndex * 16, 7 + 61 + 70, 33 + category.moduleIndex * 16 + 12 + 2.5f, primaryColor);
 				
 				count = 0;
 				for(Module m : modules) {
 					fr.drawStringWithShadow(m.name, 73, 34.5 + count * 16, -1);
 
 					if(count == category.moduleIndex && m.expanded && !m.equals("Tabgui")) {
-
-						Gui.drawRect(70 + 68, 30.5, 70 + 68 + 68, 30 + m.settings.size() * 16 + 1.5, 0x90000000);
-						Gui.drawRect(70 + 68, 30.5f + m.index * 16, 7 + 61 + 70 + 68, 33 + m.index * 16 + 12 + 2.5f, -1);
 						
-						int index = 0;
+						int index = 0,
+							maxLength = 0;
+						for(Setting setting : m.settings) {
+							if(setting instanceof BooleanSetting) {
+								BooleanSetting bool = (BooleanSetting) setting;
+								if(maxLength < fr.getStringWidth(setting.name + ": " + (bool.enabled ? "Enabled" : "Disabled"))) {
+									maxLength = fr.getStringWidth(setting.name + ": " + (bool.enabled ? "Enabled" : "Disabled"));
+								}
+							}
+							
+							if(setting instanceof NumberSetting) {
+								NumberSetting number = (NumberSetting) setting;
+								if(maxLength < fr.getStringWidth(setting.name + ": " + number.getValue())) {
+									maxLength = fr.getStringWidth(setting.name + ": " + number.getValue());
+								}
+							}
+							
+							if(setting instanceof ModeSetting) {
+								ModeSetting mode = (ModeSetting) setting;
+								if(maxLength < fr.getStringWidth(setting.name + ": " + mode.getMode())) {
+									maxLength = fr.getStringWidth(setting.name + ": " + mode.getMode());
+								}
+							}
+							
+							index++;
+						}
+
+						Gui.drawRect(70 + 68, 30.5, 70 + 68 + maxLength + 8, 30 + m.settings.size() * 16 + 1.5, primaryColor);
+						Gui.drawRect(70 + 68, 30.5f + m.index * 16, 7 + 61 + maxLength + 8 + 70, 33 + m.index * 16 + 12 + 2.5f, m.settings.get(m.index).focused ? secondaryColor : primaryColor);
+						
+						index = 0;
 						for(Setting setting : m.settings) {
 							if(setting instanceof BooleanSetting) {
 								BooleanSetting bool = (BooleanSetting) setting;
 								fr.drawStringWithShadow(setting.name + ": " + (bool.enabled ? "Enabled" : "Disabled"), 73 + 68, 34.5 + index * 16, -1);
 							}
+							
+							if(setting instanceof NumberSetting) {
+								NumberSetting number = (NumberSetting) setting;
+								fr.drawStringWithShadow(setting.name + ": " + number.getValue(), 73 + 68, 34.5 + index * 16, -1);
+							}
+							
+							if(setting instanceof ModeSetting) {
+								ModeSetting mode = (ModeSetting) setting;
+								fr.drawStringWithShadow(setting.name + ": " + mode.getMode(), 73 + 68, 34.5 + index * 16, -1);
+							}
+							
 							index++;
 						}
 					}
@@ -175,8 +218,12 @@ public class TabGUI extends Module {
 			if(code == Keyboard.KEY_RETURN) {
 				if(expanded && modules.size() != 0) {
 					Module module = modules.get(category.moduleIndex);
+					
 					if(!module.expanded) {
 						module.expanded = true;
+					}
+					else if(module.expanded){
+						module.settings.get(module.index).focused = !module.settings.get(module.index).focused;
 					}
 				}
 			}
