@@ -30,12 +30,13 @@ public class TabGUI extends Module {
 		if(e instanceof EventRenderGUI) {
 			FontRenderer fr = mc.fontRendererObj;
 			
-			int primaryColor = -1,
-				secondaryColor = 0x00AA00AA;
+			int primaryColor = 0xff0090ff,
+				secondaryColor = 0xff0070aa,
+				shadowColor = 0x90000000;
 			
 			//TODO: A szélességet (80) kicserélni a leghosszab kategórianév +x értékre
 			//átlátszó menü
-			Gui.drawRect(5, 30.5, 70, 30 + Module.Category.values().length * 16 + 1.5, 0x90000000);
+			Gui.drawRect(5, 30.5, 70, 30 + Module.Category.values().length * 16 + 1.5, shadowColor);
 			//modulok az átlátszó menüben
 			Gui.drawRect(5, 30.5f + currentTab * 16, 7 + 61 + 2, 33 + currentTab * 16 + 12 + 2.5f, primaryColor);
 			
@@ -54,7 +55,7 @@ public class TabGUI extends Module {
 					return;
 				}
 				
-				Gui.drawRect(70, 30.5, 70 + 68, 30 + modules.size() * 16 + 1.5, 0x90000000);
+				Gui.drawRect(70, 30.5, 70 + 68, 30 + modules.size() * 16 + 1.5, shadowColor);
 				Gui.drawRect(70, 30.5f + category.moduleIndex * 16, 7 + 61 + 70, 33 + category.moduleIndex * 16 + 12 + 2.5f, primaryColor);
 				
 				count = 0;
@@ -90,7 +91,7 @@ public class TabGUI extends Module {
 							index++;
 						}
 
-						Gui.drawRect(70 + 68, 30.5, 70 + 68 + maxLength + 8, 30 + m.settings.size() * 16 + 1.5, primaryColor);
+						Gui.drawRect(70 + 68, 30.5, 70 + 68 + maxLength + 8, 30 + m.settings.size() * 16 + 1.5, shadowColor);
 						Gui.drawRect(70 + 68, 30.5f + m.index * 16, 7 + 61 + maxLength + 8 + 70, 33 + m.index * 16 + 12 + 2.5f, m.settings.get(m.index).focused ? secondaryColor : primaryColor);
 						
 						index = 0;
@@ -132,11 +133,17 @@ public class TabGUI extends Module {
 				if(expanded) {
 					if(expanded && !modules.isEmpty() && modules.get(category.moduleIndex).expanded) {
 						Module module = modules.get(category.moduleIndex);
-						if(module.index <= 0) {
-							module.index = module.settings.size() - 1;
+						
+						if(module.settings.get(module.index).focused) {
+							
 						}
 						else {
-							module.index--;					
+							if(module.index <= 0) {
+								module.index = module.settings.size() - 1;
+							}
+							else {
+								module.index--;					
+							}							
 						}
 					}
 					else {
@@ -162,11 +169,16 @@ public class TabGUI extends Module {
 				if(expanded) {
 					if(expanded && !modules.isEmpty() && modules.get(category.moduleIndex).expanded) {
 						Module module = modules.get(category.moduleIndex);
-						if(module.index >= module.settings.size() - 1) {
-							module.index = 0;
+						if(module.settings.get(module.index).focused) {
+							
 						}
 						else {
-							module.index++;
+							if(module.index >= module.settings.size() - 1) {
+								module.index = 0;
+							}
+							else {
+								module.index++;
+							}
 						}
 					}
 					else {
@@ -192,8 +204,12 @@ public class TabGUI extends Module {
 				if(expanded && modules.size() != 0) {
 					Module module = modules.get(category.moduleIndex);
 
-					if(expanded && !modules.isEmpty() && modules.get(category.moduleIndex).expanded) {
+					if(expanded && !modules.isEmpty() && module.expanded) {
+						Setting setting = module.settings.get(module.index);
 						
+						if(setting instanceof BooleanSetting) {
+							((BooleanSetting)setting).toggle();
+						}
 					}
 					else {
 						if(!module.name.equals("TabGUI")) {
@@ -208,7 +224,14 @@ public class TabGUI extends Module {
 			
 			if(code == Keyboard.KEY_LEFT) {
 				if(expanded && !modules.isEmpty() && modules.get(category.moduleIndex).expanded) {
-					modules.get(category.moduleIndex).expanded = false;
+					Module module = modules.get(category.moduleIndex);
+					
+					if(module.settings.get(module.index).focused) {
+						
+					}
+					else {
+						modules.get(category.moduleIndex).expanded = false;
+					}
 				}
 				else {
 					expanded = false;					
