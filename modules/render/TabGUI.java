@@ -90,28 +90,31 @@ public class TabGUI extends Module {
 							
 							index++;
 						}
-
-						Gui.drawRect(70 + 68, 30.5, 70 + 68 + maxLength + 8, 30 + m.settings.size() * 16 + 1.5, shadowColor);
-						Gui.drawRect(70 + 68, 30.5f + m.index * 16, 7 + 61 + maxLength + 8 + 70, 33 + m.index * 16 + 12 + 2.5f, m.settings.get(m.index).focused ? secondaryColor : primaryColor);
 						
-						index = 0;
-						for(Setting setting : m.settings) {
-							if(setting instanceof BooleanSetting) {
-								BooleanSetting bool = (BooleanSetting) setting;
-								fr.drawStringWithShadow(setting.name + ": " + (bool.enabled ? "Enabled" : "Disabled"), 73 + 68, 34.5 + index * 16, -1);
+						if(!m.settings.isEmpty()) {
+							Gui.drawRect(70 + 68, 30.5, 70 + 68 + maxLength + 8, 30 + m.settings.size() * 16 + 1.5, shadowColor);
+							Gui.drawRect(70 + 68, 30.5f + m.index * 16, 7 + 61 + maxLength + 8 + 70, 33 + m.index * 16 + 12 + 2.5f, m.settings.get(m.index).focused ? secondaryColor : primaryColor);
+						
+						
+							index = 0;
+							for(Setting setting : m.settings) {
+								if(setting instanceof BooleanSetting) {
+									BooleanSetting bool = (BooleanSetting) setting;
+									fr.drawStringWithShadow(setting.name + ": " + (bool.enabled ? "Enabled" : "Disabled"), 73 + 68, 34.5 + index * 16, -1);
+								}
+								
+								if(setting instanceof NumberSetting) {
+									NumberSetting number = (NumberSetting) setting;
+									fr.drawStringWithShadow(setting.name + ": " + number.getValue(), 73 + 68, 34.5 + index * 16, -1);
+								}
+								
+								if(setting instanceof ModeSetting) {
+									ModeSetting mode = (ModeSetting) setting;
+									fr.drawStringWithShadow(setting.name + ": " + mode.getMode(), 73 + 68, 34.5 + index * 16, -1);
+								}
+								
+								index++;
 							}
-							
-							if(setting instanceof NumberSetting) {
-								NumberSetting number = (NumberSetting) setting;
-								fr.drawStringWithShadow(setting.name + ": " + number.getValue(), 73 + 68, 34.5 + index * 16, -1);
-							}
-							
-							if(setting instanceof ModeSetting) {
-								ModeSetting mode = (ModeSetting) setting;
-								fr.drawStringWithShadow(setting.name + ": " + mode.getMode(), 73 + 68, 34.5 + index * 16, -1);
-							}
-							
-							index++;
 						}
 					}
 					
@@ -134,16 +137,22 @@ public class TabGUI extends Module {
 					if(expanded && !modules.isEmpty() && modules.get(category.moduleIndex).expanded) {
 						Module module = modules.get(category.moduleIndex);
 						
-						if(module.settings.get(module.index).focused) {
-							
-						}
-						else {
-							if(module.index <= 0) {
-								module.index = module.settings.size() - 1;
+						if(!module.settings.isEmpty()) {
+							if(module.settings.get(module.index).focused) {
+								Setting setting = module.settings.get(module.index);
+								
+								if(setting instanceof NumberSetting) {
+									((NumberSetting)setting).increment(true);
+								}
 							}
 							else {
-								module.index--;					
-							}							
+								if(module.index <= 0) {
+									module.index = module.settings.size() - 1;
+								}
+								else {
+									module.index--;					
+								}							
+							}
 						}
 					}
 					else {
@@ -169,15 +178,22 @@ public class TabGUI extends Module {
 				if(expanded) {
 					if(expanded && !modules.isEmpty() && modules.get(category.moduleIndex).expanded) {
 						Module module = modules.get(category.moduleIndex);
-						if(module.settings.get(module.index).focused) {
-							
-						}
-						else {
-							if(module.index >= module.settings.size() - 1) {
-								module.index = 0;
+						
+						if(!module.settings.isEmpty()) {
+							if(module.settings.get(module.index).focused) {
+								Setting setting = module.settings.get(module.index);
+								
+								if(setting instanceof NumberSetting) {
+									((NumberSetting)setting).increment(false);
+								}
 							}
 							else {
-								module.index++;
+								if(module.index >= module.settings.size() - 1) {
+									module.index = 0;
+								}
+								else {
+									module.index++;
+								}
 							}
 						}
 					}
@@ -205,10 +221,15 @@ public class TabGUI extends Module {
 					Module module = modules.get(category.moduleIndex);
 
 					if(expanded && !modules.isEmpty() && module.expanded) {
-						Setting setting = module.settings.get(module.index);
-						
-						if(setting instanceof BooleanSetting) {
-							((BooleanSetting)setting).toggle();
+						if(!module.settings.isEmpty()) {
+							Setting setting = module.settings.get(module.index);
+							
+							if(setting instanceof BooleanSetting) {
+								((BooleanSetting)setting).toggle();
+							}
+							if(setting instanceof ModeSetting) {
+								((ModeSetting)setting).cycle();
+							}
 						}
 					}
 					else {
@@ -226,11 +247,13 @@ public class TabGUI extends Module {
 				if(expanded && !modules.isEmpty() && modules.get(category.moduleIndex).expanded) {
 					Module module = modules.get(category.moduleIndex);
 					
-					if(module.settings.get(module.index).focused) {
-						
-					}
-					else {
-						modules.get(category.moduleIndex).expanded = false;
+					if(!module.settings.isEmpty()) {
+						if(module.settings.get(module.index).focused) {
+								
+						}
+						else {
+							modules.get(category.moduleIndex).expanded = false;
+						}
 					}
 				}
 				else {
@@ -242,10 +265,10 @@ public class TabGUI extends Module {
 				if(expanded && modules.size() != 0) {
 					Module module = modules.get(category.moduleIndex);
 					
-					if(!module.expanded) {
+					if(!module.expanded && !module.settings.isEmpty()) {
 						module.expanded = true;
 					}
-					else if(module.expanded){
+					else if(module.expanded && module.settings.isEmpty()){
 						module.settings.get(module.index).focused = !module.settings.get(module.index).focused;
 					}
 				}
