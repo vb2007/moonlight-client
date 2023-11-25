@@ -11,9 +11,11 @@ import moonlight.events.listeners.EventRenderGUI;
 import moonlight.events.listeners.EventUpdate;
 import moonlight.modules.Module;
 import moonlight.settings.BooleanSetting;
+import moonlight.settings.KeybindSetting;
 import moonlight.settings.ModeSetting;
 import moonlight.settings.NumberSetting;
 import moonlight.settings.Setting;
+import moonlight.util.ColorUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 
@@ -30,8 +32,11 @@ public class TabGUI extends Module {
 		if(e instanceof EventRenderGUI) {
 			FontRenderer fr = mc.fontRendererObj;
 			
-			int primaryColor = 0xff0090ff,
-				secondaryColor = 0xff0070aa,
+			int primaryRgbColor = ColorUtil.getRainbow(4, 0.8f, 1);
+			int secondaryRgbColor = ColorUtil.getRainbow(1, 0.5f, 1);
+			
+			int primaryColor = primaryRgbColor,
+				secondaryColor = secondaryRgbColor,
 				shadowColor = 0x90000000;
 			
 			//TODO: A szélességet (80) kicserélni a leghosszab kategórianév +x értékre
@@ -88,6 +93,13 @@ public class TabGUI extends Module {
 								}
 							}
 							
+							if(setting instanceof KeybindSetting) {
+								KeybindSetting keyBind = (KeybindSetting) setting;
+								if(maxLength < fr.getStringWidth(setting.name + ": " + Keyboard.getKeyName(keyBind.keyCode))) {
+									maxLength = fr.getStringWidth(setting.name + ": " + Keyboard.getKeyName(keyBind.keyCode));
+								}
+							}
+							
 							index++;
 						}
 						
@@ -113,6 +125,11 @@ public class TabGUI extends Module {
 									fr.drawStringWithShadow(setting.name + ": " + mode.getMode(), 73 + 68, 34.5 + index * 16, -1);
 								}
 								
+								if(setting instanceof KeybindSetting) {
+									KeybindSetting keyBind = (KeybindSetting) setting;
+									fr.drawStringWithShadow(setting.name + ": " + Keyboard.getKeyName(keyBind.keyCode), 73 + 68, 34.5 + index * 16, -1);
+								}
+								
 								index++;
 							}
 						}
@@ -131,6 +148,21 @@ public class TabGUI extends Module {
 			//List<Module> modules = Client.getModulesByCategory(Module.Category.values()[currentTab]);
 			Category category = Module.Category.values()[currentTab];
 			List<Module> modules = Client.getModulesByCategory(category);
+			
+			if(expanded && !modules.isEmpty() && modules.get(category.moduleIndex).expanded) {
+				Module module = modules.get(category.moduleIndex);
+				
+				if(!module.settings.isEmpty() && module.settings.get(module.index).focused && module.settings.get(module.index) instanceof KeybindSetting) {
+					if(code != Keyboard.KEY_RETURN && code != Keyboard.KEY_UP && code != Keyboard.KEY_DOWN && code != Keyboard.KEY_LEFT && code != Keyboard.KEY_RIGHT && code != Keyboard.KEY_ESCAPE) {
+						
+						KeybindSetting keyBind = (KeybindSetting)module.settings.get(module.index);
+						keyBind.keyCode = code;
+						keyBind.focused = false;
+						
+						return;
+					}
+				}
+			}
 			
 			if(code == Keyboard.KEY_UP) {
 				if(expanded) {
