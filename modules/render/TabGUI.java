@@ -32,8 +32,10 @@ public class TabGUI extends Module {
 		if(e instanceof EventRenderGUI) {
 			FontRenderer fr = mc.fontRendererObj;
 			
+			//getRainbow(sebesség, szín intenzitás, idk)
 			int primaryRgbColor = ColorUtil.getRainbow(4, 0.8f, 1);
-			int secondaryRgbColor = ColorUtil.getRainbow(1, 0.5f, 1);
+			//picit kifehéríti a színt
+			int secondaryRgbColor = ColorUtil.getRainbow(4, 0.4f, 1);
 			
 			int primaryColor = primaryRgbColor,
 				secondaryColor = secondaryRgbColor,
@@ -66,7 +68,7 @@ public class TabGUI extends Module {
 				count = 0;
 				for(Module m : modules) {
 					fr.drawStringWithShadow(m.name, 73, 34.5 + count * 16, -1);
-
+					
 					if(count == category.moduleIndex && m.expanded && !m.equals("Tabgui")) {
 						
 						int index = 0,
@@ -103,6 +105,7 @@ public class TabGUI extends Module {
 							index++;
 						}
 						
+						//modul beállításneveinek és értékeinek kiírása 
 						if(!m.settings.isEmpty()) {
 							Gui.drawRect(70 + 68, 30.5, 70 + 68 + maxLength + 8, 30 + m.settings.size() * 16 + 1.5, shadowColor);
 							Gui.drawRect(70 + 68, 30.5f + m.index * 16, 7 + 61 + maxLength + 8 + 70, 33 + m.index * 16 + 12 + 2.5f, m.settings.get(m.index).focused ? secondaryColor : primaryColor);
@@ -152,13 +155,17 @@ public class TabGUI extends Module {
 			if(expanded && !modules.isEmpty() && modules.get(category.moduleIndex).expanded) {
 				Module module = modules.get(category.moduleIndex);
 				
+				//keybindok beállítása
 				if(!module.settings.isEmpty() && module.settings.get(module.index).focused && module.settings.get(module.index) instanceof KeybindSetting) {
+					//néhány billentyû blokkolása
 					if(code != Keyboard.KEY_RETURN && code != Keyboard.KEY_UP && code != Keyboard.KEY_DOWN && code != Keyboard.KEY_LEFT && code != Keyboard.KEY_RIGHT && code != Keyboard.KEY_ESCAPE) {
 						
+						//majd beállítás 
 						KeybindSetting keyBind = (KeybindSetting)module.settings.get(module.index);
 						keyBind.keyCode = code;
 						keyBind.focused = false;
 						
+						//és érték visszaadása 
 						return;
 					}
 				}
@@ -182,7 +189,7 @@ public class TabGUI extends Module {
 									module.index = module.settings.size() - 1;
 								}
 								else {
-									module.index--;					
+									module.index--;
 								}							
 							}
 						}
@@ -252,16 +259,14 @@ public class TabGUI extends Module {
 				if(expanded && modules.size() != 0) {
 					Module module = modules.get(category.moduleIndex);
 
-					if(expanded && !modules.isEmpty() && module.expanded) {
-						if(!module.settings.isEmpty()) {
-							Setting setting = module.settings.get(module.index);
-							
-							if(setting instanceof BooleanSetting) {
-								((BooleanSetting)setting).toggle();
-							}
-							if(setting instanceof ModeSetting) {
-								((ModeSetting)setting).cycle();
-							}
+					if(expanded && !modules.isEmpty() && modules.get(category.moduleIndex).expanded) {
+						Setting setting = module.settings.get(module.index);
+						
+						if(setting instanceof BooleanSetting) {
+							((BooleanSetting)setting).toggle();
+						}
+						if(setting instanceof ModeSetting) {
+							((ModeSetting)setting).cycle();
 						}
 					}
 					else {
@@ -289,18 +294,23 @@ public class TabGUI extends Module {
 					}
 				}
 				else {
-					expanded = false;					
+					expanded = false;
 				}
 			}
 			
 			if(code == Keyboard.KEY_RETURN) {
+				//ha egy típus (pl.: movement) ki van nyitva és azon belül a felhasználó egy modulon van...
 				if(expanded && modules.size() != 0) {
 					Module module = modules.get(category.moduleIndex);
 					
-					if(!module.expanded && !module.settings.isEmpty()) {
+					//ha nincs kinyitva annak a modulnak a beállítások menüje
+					if(!module.expanded && !module.settings.isEmpty()) { //  && !module.settings.isEmpty() --> jelenleg nem mûködik vele
+						//..akkor kinyitjuk
 						module.expanded = true;
 					}
-					else if(module.expanded && module.settings.isEmpty()){
+					//ha pedig már ki van
+					else if(module.expanded){ //  && module.settings.isEmpty()  --> jelenleg nem mûködik vele
+						//..akkro becsukjuk
 						module.settings.get(module.index).focused = !module.settings.get(module.index).focused;
 					}
 				}
