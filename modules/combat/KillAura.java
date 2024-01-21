@@ -28,7 +28,9 @@ public class KillAura extends Module {
 	//pl.: ("Beállítás neve", alapérték, minimum érték, maximum érték, változás mérete)
 	public NumberSetting range = new NumberSetting("Range", 4, 1, 6, 0.1);
 	public NumberSetting aps = new NumberSetting("APS", 10, 1, 20, 1);
+	//pl.: ("Beállítás neve", true/false)
 	public BooleanSetting noSwing = new BooleanSetting("NoSwing", false);
+	//pl.: ("Beállítás neve", alapérték, érték1, érték2, érték3, stb...)
 	public ModeSetting test = new ModeSetting("Test", "One", "One", "Two", "Three");
 	
 	public KillAura() {
