@@ -19,6 +19,7 @@ public class Help extends Command {
 				+ "\n"
 				+ "\n" + "Help - displays this command: .h/.help "
 				+ "\n" + "Toggle - toggles a module: .t/.toggle <cheat name>"
-				+ "\n" + "Bind - binds a module to a key: .b/.bind <cheat name> <key> / <clear>");
+				+ "\n" + "Bind - binds a module to a key: .b/.bind <cheat name> <key> / <clear>"
+				+ "\n" + "Say - force says possibly censored words & commands (for example): .s/.say <message>");
 	}
 }
