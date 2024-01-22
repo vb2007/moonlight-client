@@ -7,6 +7,7 @@ import org.lwjgl.util.Color;
 
 import moonlight.Client;
 import moonlight.modules.Module;
+import moonlight.util.ColorUtil;
 import moonlight.events.listeners.EventRenderGUI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -18,7 +19,7 @@ public class HUD {
 	
 	public Minecraft mc = Minecraft.getMinecraft();
 	int moduleShadowColor = 0x80AA00AA;
-	int moduleListColor = -1;
+	int clientNameColor = -1;
 	
 	/*public static class ModuleComparator implements Comparator<Module> {
 
@@ -68,10 +69,10 @@ public class HUD {
 			double offset = count*(fr.FONT_HEIGHT + 6);
 			
 			//displays a border around the active modules
-			Gui.drawRect(sr.getScaledWidth() - fr.getStringWidth(m.name) - 10, offset, sr.getScaledWidth() - fr.getStringWidth(m.name) - 8, 6 + fr.FONT_HEIGHT + offset,  moduleListColor);
+			Gui.drawRect(sr.getScaledWidth() - fr.getStringWidth(m.name) - 10, offset, sr.getScaledWidth() - fr.getStringWidth(m.name) - 8, 6 + fr.FONT_HEIGHT + offset,  ColorUtil.getRainbow(4,  0.8f,  1, count * 100));
 			Gui.drawRect(sr.getScaledWidth() - fr.getStringWidth(m.name) - 8, offset, sr.getScaledWidth(), 6 + fr.FONT_HEIGHT + offset,  moduleShadowColor);
 			//displays the client's name
-			fr.drawStringWithShadow(m.name, sr.getScaledWidth() - fr.getStringWidth(m.name) - 4, 4 + offset, moduleListColor);
+			fr.drawStringWithShadow(m.name, sr.getScaledWidth() - fr.getStringWidth(m.name) - 4, 4 + offset, clientNameColor);
 			
 			count++;
 		}
