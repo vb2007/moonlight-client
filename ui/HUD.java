@@ -18,8 +18,6 @@ import net.minecraft.client.renderer.GlStateManager;
 public class HUD {
 	
 	public Minecraft mc = Minecraft.getMinecraft();
-	int moduleShadowColor = 0x80AA00AA;
-	int clientNameColor = -1;
 	
 	/*public static class ModuleComparator implements Comparator<Module> {
 
@@ -67,12 +65,16 @@ public class HUD {
 			}
 			
 			double offset = count*(fr.FONT_HEIGHT + 6);
+			//purple-ish background (for non rgb module names):
+			//int moduleShadowColor = 0x80AA00AA;
+			int moduleShadowColor = 0x90000000;
+			int rgbColor = ColorUtil.getRainbow(4,  0.8f,  1, count * 150);
 			
 			//displays a border around the active modules
-			Gui.drawRect(sr.getScaledWidth() - fr.getStringWidth(m.name) - 10, offset, sr.getScaledWidth() - fr.getStringWidth(m.name) - 8, 6 + fr.FONT_HEIGHT + offset,  ColorUtil.getRainbow(4,  0.8f,  1, count * 100));
+			Gui.drawRect(sr.getScaledWidth() - fr.getStringWidth(m.name) - 10, offset, sr.getScaledWidth() - fr.getStringWidth(m.name) - 8, 6 + fr.FONT_HEIGHT + offset,  rgbColor);
 			Gui.drawRect(sr.getScaledWidth() - fr.getStringWidth(m.name) - 8, offset, sr.getScaledWidth(), 6 + fr.FONT_HEIGHT + offset,  moduleShadowColor);
-			//displays the client's name
-			fr.drawStringWithShadow(m.name, sr.getScaledWidth() - fr.getStringWidth(m.name) - 4, 4 + offset, clientNameColor);
+			//displays module names
+			fr.drawStringWithShadow(m.name, sr.getScaledWidth() - fr.getStringWidth(m.name) - 4, 4 + offset, rgbColor);
 			
 			count++;
 		}
