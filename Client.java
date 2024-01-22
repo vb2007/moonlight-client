@@ -6,7 +6,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.lwjgl.opengl.Display;
 
+import moonlight.command.CommandManager;
 import moonlight.events.Event;
+import moonlight.events.listeners.EventChat;
 import moonlight.events.listeners.EventKey;
 import moonlight.modules.Module;
 import moonlight.modules.Module.Category;
@@ -15,16 +17,22 @@ import moonlight.modules.movement.*;
 import moonlight.modules.player.*;
 import moonlight.modules.render.*;
 import moonlight.ui.HUD;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.ChatComponentText;
 
 public class Client {
 	
+	//kliens infó
 	public static String name = "Moonlight";
 	public static String nameWithClient = "Moonlight Client";
 	public static String version = "v0.1";
 
-	public static CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<Module>();
+	public static CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<Module>(); //idk
 	
+	//egyedi hud
 	public static HUD hud = new HUD();
+	//egyedi chates commandok
+	public static CommandManager commandManager = new CommandManager();
 	
 	public static void startup() {
 		System.out.println("Starting " + nameWithClient + " " + version);
@@ -39,6 +47,11 @@ public class Client {
 	}
 	
 	public static void onEvent(Event e) {
+		//chates commandok implementálása
+		if(e instanceof EventChat) {
+			commandManager.handleChat((EventChat)e);
+		}
+		
 		for(Module m : modules) {
 			if(!m.toggled)
 				continue;
@@ -67,6 +80,15 @@ public class Client {
 		}
 		
 		return modules;
+	}
+	
+	
+	//saját chatüzenet kezelés
+	public static void addChatMessage(String message) {
+		//kék színnel kiírja a kliensnevet, majd szürkésen az üzenetet a : után
+		message = "\2479" + nameWithClient + "\2477: " + message;
+		
+		Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(message));;
 	}
 
 }
