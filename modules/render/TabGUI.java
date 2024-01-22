@@ -259,7 +259,7 @@ public class TabGUI extends Module {
 				if(expanded && modules.size() != 0) {
 					Module module = modules.get(category.moduleIndex);
 
-					if(expanded && !modules.isEmpty() && modules.get(category.moduleIndex).expanded) {
+					if(expanded && !modules.isEmpty() && module.expanded) {
 						Setting setting = module.settings.get(module.index);
 						
 						if(setting instanceof BooleanSetting) {
@@ -304,12 +304,12 @@ public class TabGUI extends Module {
 					Module module = modules.get(category.moduleIndex);
 					
 					//ha nincs kinyitva annak a modulnak a beállítások menüje
-					if(!module.expanded && !module.settings.isEmpty()) { //  && !module.settings.isEmpty() --> jelenleg nem mûködik vele
+					if(!module.expanded && !module.settings.isEmpty()) {
 						//..akkor kinyitjuk
 						module.expanded = true;
 					}
 					//ha pedig már ki van
-					else if(module.expanded){ //  && module.settings.isEmpty()  --> jelenleg nem mûködik vele
+					else if(module.expanded && !module.settings.isEmpty()){
 						//..akkro becsukjuk
 						module.settings.get(module.index).focused = !module.settings.get(module.index).focused;
 					}
