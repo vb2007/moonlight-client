@@ -38,17 +38,16 @@ public class Bind extends Command {
 		}
 		
 		//ha 1 érték clear parancs
-		if(args.length == 1 && args[0] != "clear") {
-			Client.addChatMessage("Invalid parameter(s). Type .h for help.");
-		}
-		else if(args.length == 1) {
+		if(args.length == 1) {
 			if(args[0].equalsIgnoreCase("clear")) {
 				for(Module module : Client.modules) {
 					module.keyCode.setKeyCode(Keyboard.KEY_NONE);
 				}
+				Client.addChatMessage("Cleared all binds.");
 			}
-			
-			Client.addChatMessage("Cleared all binds.");
+			else {
+				Client.addChatMessage("Invalid parameter(s). Type .h for help.");
+			}
 		}
 	}
 }
