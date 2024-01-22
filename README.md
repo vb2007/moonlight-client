@@ -5,7 +5,7 @@ The client was developed with MCP 910 and OptiFine 1.8 HD U H6, using Eclipse 20
 
 **The uploaded files are only the custom packages for the client.**
 
-I've done crucial changes to some critical main game files (like *Minecraft.java*), so you need to [DOWNLOAD](https://vb2007.hu/cdn/moonlight-client.zip) the modified 1.8 MCP (mod coder pack) to debug the client.
+I've done crucial changes to some critical main game files (like *Minecraft.java*), so you need to [DOWNLOAD](https://vb2007.hu/extended-cdn/rest-in-peace-intent/moonlight-client.zip) the modified 1.8 MCP (mod coder pack) to debug the client.
 Obviously I can't just upload the whole pack to GitHub, since it's almost a gigabyte.
 
 When the download is completed, just open **Eclipse**, and enter the ***..\moonlight-client\eclipse*** path.
