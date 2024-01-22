@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import moonlight.Client;
+import moonlight.command.implement.Bind;
+import moonlight.command.implement.Help;
 import moonlight.command.implement.Toggle;
 import moonlight.events.listeners.EventChat;
 
@@ -21,6 +23,8 @@ public class CommandManager {
 	//command import a command.implement-bõl
 	public void setup() {
 		commands.add(new Toggle());
+		commands.add(new Bind());
+		commands.add(new Help());
 	}
 	
 	public void handleChat(EventChat event) {
