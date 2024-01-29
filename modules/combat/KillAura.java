@@ -18,6 +18,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.network.play.client.C02PacketUseEntity.Action;
@@ -31,7 +33,7 @@ public class KillAura extends Module {
 	public NumberSetting range = new NumberSetting("Range", 4, 1, 6, 0.1);
 	public NumberSetting aps = new NumberSetting("APS", 10, 1, 20, 1);
 	//pl.: ("Beállítás neve", alapérték, érték1, érték2, érték3, stb...)
-	public ModeSetting target = new ModeSetting("Target", "All", "All", "Players", "Mobs (hostile)", "Animals");
+	public ModeSetting target = new ModeSetting("Target", "All", "All", "Players", "Mobs (hostile)", "Mobs (peaceful) + Animals", "Animals");
 	//pl.: ("Beállítás neve", true/false)
 	public BooleanSetting noSwing = new BooleanSetting("NoSwing", false);
 	
@@ -69,10 +71,15 @@ public class KillAura extends Module {
 					case "Mobs (hostile)":
 						targets = targets.stream().filter(EntityMob.class::isInstance).collect(Collectors.toList());
 						break;
+					case "Mobs (peaceful) + Animals":
+						targets = targets.stream().filter(entity -> entity instanceof EntityVillager || entity instanceof EntityAnimal && !((EntityWolf) entity).isTamed()).collect(Collectors.toList());
+						break;
 					case "Animals":
-						targets = targets.stream().filter(EntityAnimal.class::isInstance).collect(Collectors.toList());
+						targets = targets.stream().filter(entity -> entity instanceof EntityAnimal && !((EntityWolf) entity).isTamed()).collect(Collectors.toList());
 						break;
 					case "All":
+						//TODO crashel ezzel az exclude-al valamiért
+						//targets = targets.stream().filter(entity -> !((EntityWolf) entity).isTamed()).collect(Collectors.toList());
 						break;
 				}
 				
