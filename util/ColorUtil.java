@@ -11,9 +11,9 @@ public class ColorUtil {
 		return rgbColor;
 	}
 	
-	public static int getRainbow(float seconds, float saturation, float brightness, long index) {
+	public static int getRainbow(float seconds, float saturation, float brightness, float index) {
 		//float seconds = 3.5f;
-		float hue = ((System.currentTimeMillis() + index) % (int)(seconds * 1000)) / (float)(seconds * 1000);
+		float hue = ((System.currentTimeMillis() + (long)index) % (int)(seconds * 1000)) / (float)(seconds * 1000);
 		int rgbColor= Color.HSBtoRGB(hue, saturation, brightness);
 		return rgbColor;
 	}

@@ -68,7 +68,7 @@ public class HUD {
 			//purple-ish background (for non rgb module names):
 			//int moduleShadowColor = 0x80AA00AA;
 			int moduleShadowColor = 0x90000000;
-			int rgbColor = ColorUtil.getRainbow(4,  0.8f,  1, count * 150);
+			int rgbColor = ColorUtil.getRainbow(4,  0.8f,  1, count * 125);
 			
 			//displays a border around the active modules
 			Gui.drawRect(sr.getScaledWidth() - fr.getStringWidth(m.name) - 10, offset, sr.getScaledWidth() - fr.getStringWidth(m.name) - 8, 6 + fr.FONT_HEIGHT + offset,  rgbColor);

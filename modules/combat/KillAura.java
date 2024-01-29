@@ -16,6 +16,8 @@ import moonlight.settings.NumberSetting;
 import moonlight.util.Timer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.network.play.client.C02PacketUseEntity.Action;
@@ -28,14 +30,14 @@ public class KillAura extends Module {
 	//pl.: ("Beállítás neve", alapérték, minimum érték, maximum érték, változás mérete)
 	public NumberSetting range = new NumberSetting("Range", 4, 1, 6, 0.1);
 	public NumberSetting aps = new NumberSetting("APS", 10, 1, 20, 1);
+	//pl.: ("Beállítás neve", alapérték, érték1, érték2, érték3, stb...)
+	public ModeSetting target = new ModeSetting("Target", "All", "All", "Players", "Mobs (hostile)", "Animals");
 	//pl.: ("Beállítás neve", true/false)
 	public BooleanSetting noSwing = new BooleanSetting("NoSwing", false);
-	//pl.: ("Beállítás neve", alapérték, érték1, érték2, érték3, stb...)
-	public ModeSetting test = new ModeSetting("Test", "One", "One", "Two", "Three");
 	
 	public KillAura() {
 		super("KillAura", Keyboard.KEY_R, Category.COMBAT);
-		this.addSettings(range, aps, noSwing, test);
+		this.addSettings(range, aps, noSwing, target);
 	}
 	
 	public void onEnable() {
@@ -55,10 +57,24 @@ public class KillAura extends Module {
 				//lists living entities in the world
 				List<EntityLivingBase> targets = (List<EntityLivingBase>) mc.theWorld.loadedEntityList.stream().filter(EntityLivingBase.class::isInstance).collect(Collectors.toList());
 				
-				//shortens the list to entities that are closer to the player than 4 blocks
+				//shortens the list to entities that are closer to the player than the given value
 				targets = targets.stream().filter(entity -> entity.getDistanceToEntity(mc.thePlayer) < range.getValue() && entity != mc.thePlayer && !entity.isDead && entity.getHealth() > 0).collect(Collectors.toList());
 				
 				targets.sort(Comparator.comparingDouble(entity -> ((EntityLivingBase)entity).getDistanceToEntity(mc.thePlayer)));
+				
+				switch(target.getMode()) {
+					case "Players":
+						targets = targets.stream().filter(EntityPlayer.class::isInstance).collect(Collectors.toList());
+						break;
+					case "Mobs (hostile)":
+						targets = targets.stream().filter(EntityMob.class::isInstance).collect(Collectors.toList());
+						break;
+					case "Animals":
+						targets = targets.stream().filter(EntityAnimal.class::isInstance).collect(Collectors.toList());
+						break;
+					case "All":
+						break;
+				}
 				
 				//targets = targets.stream().filter(EntityX.class::isInstance).collect(Collectors.toList());
 				//EntityX-et behelyettesíteni + importálni:
