@@ -1,1 +1,5 @@
-./src/temp
+/src/temp
+
+/src/eclipse/.metadata/.log
+/src/jars/logs
+/src/jars/saves
