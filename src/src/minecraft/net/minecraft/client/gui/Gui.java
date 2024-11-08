@@ -47,9 +47,9 @@ public class Gui
     /**
      * Draws a solid color rectangle with the specified coordinates and color (ARGB format). Args: x1, y1, x2, y2, color
      */
-    public static void drawRect(int left, int top, int right, int bottom, int color)
+    public static void drawRect(double left, double offset, double right, double d, int color)
     {
-        int var5;
+        double var5;
 
         if (left < right)
         {
@@ -58,11 +58,11 @@ public class Gui
             right = var5;
         }
 
-        if (top < bottom)
+        if (offset < d)
         {
-            var5 = top;
-            top = bottom;
-            bottom = var5;
+            var5 = offset;
+            offset = d;
+            d = var5;
         }
 
         float var11 = (float)(color >> 24 & 255) / 255.0F;
@@ -76,10 +76,10 @@ public class Gui
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         GlStateManager.color(var6, var7, var8, var11);
         var10.startDrawingQuads();
-        var10.addVertex((double)left, (double)bottom, 0.0D);
-        var10.addVertex((double)right, (double)bottom, 0.0D);
-        var10.addVertex((double)right, (double)top, 0.0D);
-        var10.addVertex((double)left, (double)top, 0.0D);
+        var10.addVertex((double)left, (double)d, 0.0D);
+        var10.addVertex((double)right, (double)d, 0.0D);
+        var10.addVertex((double)right, (double)offset, 0.0D);
+        var10.addVertex((double)left, (double)offset, 0.0D);
         var9.draw();
         GlStateManager.func_179098_w();
         GlStateManager.disableBlend();
@@ -123,9 +123,9 @@ public class Gui
     /**
      * Renders the specified text to the screen, center-aligned. Args : renderer, string, x, y, color
      */
-    public void drawCenteredString(FontRenderer fontRendererIn, String text, int x, int y, int color)
+    public void drawCenteredString(FontRenderer fontRendererIn, String text, float f, float g, int color)
     {
-        fontRendererIn.func_175063_a(text, (float)(x - fontRendererIn.getStringWidth(text) / 2), (float)y, color);
+        fontRendererIn.drawStringWithShadow(text, (float)(f - fontRendererIn.getStringWidth(text) / 2), (float)g, color);
     }
 
     /**
@@ -133,7 +133,7 @@ public class Gui
      */
     public void drawString(FontRenderer fontRendererIn, String text, int x, int y, int color)
     {
-        fontRendererIn.func_175063_a(text, (float)x, (float)y, color);
+        fontRendererIn.drawStringWithShadow(text, (float)x, (float)y, color);
     }
 
     /**

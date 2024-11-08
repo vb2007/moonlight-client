@@ -136,10 +136,10 @@ public enum ModelRotation implements IModelState, ITransformation
         return this.func_177520_a(facing, vertexIndex);
     }
 
-    public IModelPart apply(Object x0)
+    /*public IModelPart apply(Object x0)
     {
         return (IModelPart) this.apply((IModelPart)x0);
-    }
+    }*/
 
     static {
         ModelRotation[] var0 = values();

@@ -297,7 +297,7 @@ public class GuiShaderOptions extends GuiScreen
                         col = 16719904;
                     }
 
-                    this.fontRendererObj.func_175063_a(line, (float)(x1 + 5), (float)(y1 + 5 + i * 11), col);
+                    this.fontRendererObj.drawStringWithShadow(line, (float)(x1 + 5), (float)(y1 + 5 + i * 11), col);
                 }
             }
         }

@@ -1,6 +1,9 @@
 package net.minecraft.client.renderer;
 
 import com.google.gson.JsonSyntaxException;
+
+import moonlight.ui.MainMenu;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.FloatBuffer;
@@ -2744,9 +2747,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
             }
         }
 
-        if (this.mc.currentScreen instanceof GuiMainMenu)
+        if (this.mc.currentScreen instanceof MainMenu)
         {
-            this.updateMainMenu((GuiMainMenu)this.mc.currentScreen);
+            this.updateMainMenu((MainMenu)this.mc.currentScreen);
         }
 
         if (this.updatedWorld != world)
@@ -2785,7 +2788,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         }
     }
 
-    private void updateMainMenu(GuiMainMenu mainGui)
+    private void updateMainMenu(MainMenu mainGui)
     {
         try
         {
@@ -2810,7 +2813,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 return;
             }
 
-            Field[] fs = GuiMainMenu.class.getDeclaredFields();
+            Field[] fs = MainMenu.class.getDeclaredFields();
 
             for (int i = 0; i < fs.length; ++i)
             {

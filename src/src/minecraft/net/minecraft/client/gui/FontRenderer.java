@@ -363,17 +363,17 @@ public class FontRenderer implements IResourceManagerReloadListener
         }
     }
 
-    public int func_175063_a(String p_175063_1_, float p_175063_2_, float p_175063_3_, int p_175063_4_)
+    public int drawStringWithShadow(String p_175063_1_, double p_175063_2_, double p_175063_3_, int p_175063_4_)
     {
-        return this.func_175065_a(p_175063_1_, p_175063_2_, p_175063_3_, p_175063_4_, true);
+        return this.func_175065_a(p_175063_1_, (float)p_175063_2_, (float)p_175063_3_, p_175063_4_, true);
     }
 
     /**
      * Draws the specified string.
      */
-    public int drawString(String text, int x, int y, int color)
+    public int drawString(String text, double x, double d, int color)
     {
-        return !this.enabled ? 0 : this.func_175065_a(text, (float)x, (float)y, color, false);
+        return !this.enabled ? 0 : this.func_175065_a(text, (float)x, (float)d, color, false);
     }
 
     public int func_175065_a(String p_175065_1_, float p_175065_2_, float p_175065_3_, int p_175065_4_, boolean p_175065_5_)

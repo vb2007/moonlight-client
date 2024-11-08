@@ -570,7 +570,7 @@ public class RenderItem implements IResourceManagerReloadListener
                 GlStateManager.disableLighting();
                 GlStateManager.disableDepth();
                 GlStateManager.disableBlend();
-                p_180453_1_.func_175063_a(itemDamaged, (float)(p_180453_3_ + 19 - 2 - p_180453_1_.getStringWidth(itemDamaged)), (float)(p_180453_4_ + 6 + 3), 16777215);
+                p_180453_1_.drawStringWithShadow(itemDamaged, (float)(p_180453_3_ + 19 - 2 - p_180453_1_.getStringWidth(itemDamaged)), (float)(p_180453_4_ + 6 + 3), 16777215);
                 GlStateManager.enableLighting();
                 GlStateManager.enableDepth();
             }

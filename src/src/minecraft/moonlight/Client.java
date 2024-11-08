@@ -7,8 +7,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.lwjgl.opengl.Display;
 
 import moonlight.command.CommandManager;
+import moonlight.events.Event;
 import moonlight.events.listeners.EventChat;
 import moonlight.events.listeners.EventKey;
+import moonlight.modules.Module;
+import moonlight.modules.Module.Category;
 import moonlight.modules.combat.KillAura;
 import moonlight.modules.movement.*;
 import moonlight.modules.player.*;

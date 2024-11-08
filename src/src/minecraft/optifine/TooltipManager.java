@@ -65,7 +65,7 @@ public class TooltipManager
                         }
 
                         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
-                        fontRenderer.func_175063_a(line, (float)(x1 + 5), (float)(y1 + 5 + i * 11), col);
+                        fontRenderer.drawStringWithShadow(line, (float)(x1 + 5), (float)(y1 + 5 + i * 11), col);
                     }
                 }
             }

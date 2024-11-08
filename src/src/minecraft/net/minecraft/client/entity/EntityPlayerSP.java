@@ -1,5 +1,8 @@
 package net.minecraft.client.entity;
 
+import moonlight.Client;
+import moonlight.events.EventType;
+import moonlight.events.listeners.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -150,6 +153,14 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     public void func_175161_p()
     {
+    	EventUpdate e = new EventUpdate();
+    	e.setType(EventType.PRE);
+    	Client.onEvent(e);
+    	
+    	EventMotion event = new EventMotion(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround);
+    	event.setType(EventType.PRE);
+    	Client.onEvent(event);
+    	
         boolean var1 = this.isSprinting();
 
         if (var1 != this.field_175171_bO)
@@ -184,11 +195,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
         if (this.func_175160_A())
         {
-            double var3 = this.posX - this.field_175172_bI;
-            double var5 = this.getEntityBoundingBox().minY - this.field_175166_bJ;
-            double var7 = this.posZ - this.field_175167_bK;
-            double var9 = (double)(this.rotationYaw - this.field_175164_bL);
-            double var11 = (double)(this.rotationPitch - this.field_175165_bM);
+            double var3 = event.getX() - this.field_175172_bI;
+            double var5 = event.getY() - this.field_175166_bJ;
+            double var7 = event.getZ() - this.field_175167_bK;
+            double var9 = (double)(event.getYaw() - this.field_175164_bL);
+            double var11 = (double)(event.getPitch() - this.field_175165_bM);
             boolean var13 = var3 * var3 + var5 * var5 + var7 * var7 > 9.0E-4D || this.field_175168_bP >= 20;
             boolean var14 = var9 != 0.0D || var11 != 0.0D;
 
@@ -196,24 +207,24 @@ public class EntityPlayerSP extends AbstractClientPlayer
             {
                 if (var13 && var14)
                 {
-                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround));
+                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(event.getX(), event.getY(), event.getZ(), event.getYaw(), event.getPitch(), event.isOnGround()));
                 }
                 else if (var13)
                 {
-                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround));
+                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(event.getX(), event.getY(), event.getZ(), event.isOnGround()));
                 }
                 else if (var14)
                 {
-                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
+                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(event.getYaw(), event.getPitch(), event.isOnGround()));
                 }
                 else
                 {
-                    this.sendQueue.addToSendQueue(new C03PacketPlayer(this.onGround));
+                    this.sendQueue.addToSendQueue(new C03PacketPlayer(event.isOnGround()));
                 }
             }
             else
             {
-                this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
+                this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, event.getYaw(), event.getPitch(), event.isOnGround()));
                 var13 = false;
             }
 
@@ -221,18 +232,21 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
             if (var13)
             {
-                this.field_175172_bI = this.posX;
-                this.field_175166_bJ = this.getEntityBoundingBox().minY;
-                this.field_175167_bK = this.posZ;
+                this.field_175172_bI = event.getX();
+                this.field_175166_bJ = event.getY();
+                this.field_175167_bK = event.getZ();
                 this.field_175168_bP = 0;
             }
 
             if (var14)
             {
-                this.field_175164_bL = this.rotationYaw;
-                this.field_175165_bM = this.rotationPitch;
+                this.field_175164_bL = event.getYaw();
+                this.field_175165_bM = event.getPitch();
             }
         }
+        
+        event.setType(EventType.POST);
+    	Client.onEvent(event);
     }
 
     /**
@@ -255,7 +269,15 @@ public class EntityPlayerSP extends AbstractClientPlayer
      */
     public void sendChatMessage(String p_71165_1_)
     {
-        this.sendQueue.addToSendQueue(new C01PacketChatMessage(p_71165_1_));
+    	EventChat event = new EventChat(p_71165_1_);
+    	
+    	Client.onEvent(event);
+    	
+    	if(event.isCancelled()) {
+    		return;
+    	}
+    	
+        this.sendQueue.addToSendQueue(new C01PacketChatMessage(event.getMessage()));
     }
 
     /**
