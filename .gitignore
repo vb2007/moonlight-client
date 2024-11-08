@@ -1,0 +1,10 @@
+*.log
+
+/src/temp
+
+/src/eclipse/.metadata/*
+
+/src/jars/logs
+/src/jars/saves
+/src/jars/options.txt
+/src/jars/optionsof.txt
