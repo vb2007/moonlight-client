@@ -2,9 +2,7 @@
 
 /src/temp
 
-/src/eclipse/.metadata/.log
-/src/eclipse/.metadata/versions.ini
-/src/eclipse/.metadata/.mylyn/*.zip
+/src/eclipse/.metadata/*
 
 /src/jars/logs
 /src/jars/saves
