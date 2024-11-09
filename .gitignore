@@ -2,7 +2,7 @@
 
 /src/temp
 
-/src/eclipse/.metadata/*
+/src/eclipse/.metadata/
 
 /src/jars/logs
 /src/jars/saves

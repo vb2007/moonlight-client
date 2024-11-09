@@ -2,7 +2,6 @@ package moonlight.command.implement;
 
 import moonlight.Client;
 import moonlight.command.Command;
-import moonlight.modules.Module;
 
 public class Help extends Command {
 	

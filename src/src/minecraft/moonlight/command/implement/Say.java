@@ -1,8 +1,6 @@
 package moonlight.command.implement;
 
-import moonlight.Client;
 import moonlight.command.Command;
-import moonlight.modules.Module;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.C01PacketChatMessage;
 
