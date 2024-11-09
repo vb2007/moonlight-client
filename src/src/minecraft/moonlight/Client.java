@@ -22,7 +22,7 @@ import net.minecraft.util.ChatComponentText;
 
 public class Client {
 	
-	//kliens infó
+	//kliens infÃ³
 	public static String name = "Moonlight";
 	public static String nameWithClient = "Moonlight Client";
 	public static String version = "v0.1";
@@ -47,7 +47,7 @@ public class Client {
 	}
 	
 	public static void onEvent(Event e) {
-		//chates commandok implementálása
+		//chates commandok implementï¿½lï¿½sa
 		if(e instanceof EventChat) {
 			commandManager.handleChat((EventChat)e);
 		}
@@ -83,9 +83,9 @@ public class Client {
 	}
 	
 	
-	//saját chatüzenet kezelés
+	//sajï¿½t chatï¿½zenet kezelï¿½s
 	public static void addChatMessage(String message) {
-		//kék színnel kiírja a kliensnevet, majd szürkésen az üzenetet a : után
+		//kï¿½k szï¿½nnel kiï¿½rja a kliensnevet, majd szï¿½rkï¿½sen az ï¿½zenetet a : utï¿½n
 		message = "\2479" + nameWithClient + "\2477: " + message;
 		
 		Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(message));;
