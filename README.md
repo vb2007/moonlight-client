@@ -20,14 +20,23 @@ Do the following steps to make the client Eclipse-ready:
 
 1. Clone the repository
 2. Open Eclipse and choose the freshly cloned repo as a workspace with the `/src/eclipse` path after the project'sfolder
+
 ![1st img](https://cdn.vb2007.hu/autoindex/rest-in-peace-intent/img/1.png)
-3. Import the `Client` project
+
+4. Import the `Client` project
+
 ![2nd img](https://cdn.vb2007.hu/autoindex/rest-in-peace-intent/img/2.png)
+
 ![3rd img](https://cdn.vb2007.hu/autoindex/rest-in-peace-intent/img/3.png)
-4. Import the `Client` debug launch configuration
+
+6. Import the `Client` debug launch configuration
+
 ![4th img](https://cdn.vb2007.hu/autoindex/rest-in-peace-intent/img/4.png)
+
 ![5th img](https://cdn.vb2007.hu/autoindex/rest-in-peace-intent/img/5.png)
-5. You should be able to start debugging
+
+8. You should be able to start debugging
+
 ![6th img](https://cdn.vb2007.hu/autoindex/rest-in-peace-intent/img/6.png)
 
 *If you want to, you can import the `Server` project and launch option as well, but I've never tested & used those, so they can contain build & other errors. If you've already imported the project by accident, then just delete it.*
