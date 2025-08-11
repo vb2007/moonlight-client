@@ -22,16 +22,15 @@ import net.minecraft.util.ChatComponentText;
 
 public class Client {
 	
-	//kliens infó
+	//Client info
 	public static String name = "Moonlight";
 	public static String nameWithClient = "Moonlight Client";
 	public static String version = "v0.1";
 
-	public static CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<Module>(); //idk
+	public static CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<Module>();
 	
-	//egyedi hud
+	//Custom HUD & chat commands
 	public static HUD hud = new HUD();
-	//egyedi chates commandok
 	public static CommandManager commandManager = new CommandManager();
 	
 	public static void startup() {
@@ -47,7 +46,7 @@ public class Client {
 	}
 	
 	public static void onEvent(Event e) {
-		//chates commandok implement�l�sa
+		//Handling chat commands
 		if(e instanceof EventChat) {
 			commandManager.handleChat((EventChat)e);
 		}
