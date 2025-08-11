@@ -1,6 +1,7 @@
 package moonlight.ui;
 
 import moonlight.Client;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiLanguage;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.gui.GuiOptions;
@@ -21,7 +22,7 @@ public class MainMenu extends GuiScreen {
 	
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		mc.getTextureManager().bindTexture(new ResourceLocation("moonlight/bg2.jpg"));
-		this.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, this.width, this.height, this.width, this.height);
+		Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, this.width, this.height, this.width, this.height);
 		
 		//black gradient at the bottom of the menu
 		this.drawGradientRect(0, height - 100, width, height, 0x00000000, 0xff000000);
