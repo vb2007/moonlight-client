@@ -82,9 +82,9 @@ public class Client {
 	}
 	
 	
-	//saj�t chat�zenet kezel�s
+	//Handling custom chat messages
 	public static void addChatMessage(String message) {
-		//k�k sz�nnel ki�rja a kliensnevet, majd sz�rk�sen az �zenetet a : ut�n
+		//Writes out client name in blue, then the message in gray
 		message = "\2479" + nameWithClient + "\2477: " + message;
 		
 		Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(message));;
