@@ -14,7 +14,7 @@ public class Bind extends Command {
 
 	@Override
 	public void onCommand(String[] args, String command) {
-		//ha 2 �rt�k van bind parancs
+		//2 Parameters -> bind module
 		if(args.length == 2) {
 			String moduleName = args[0];
 			String keyName = args[1];
@@ -37,7 +37,7 @@ public class Bind extends Command {
 			}
 		}
 		
-		//ha 1 �rt�k clear parancs
+		//1 parameter -> clears bind for module
 		if(args.length == 1) {
 			if(args[0].equalsIgnoreCase("clear")) {
 				for(Module module : Client.modules) {
