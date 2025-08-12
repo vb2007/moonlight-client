@@ -12,8 +12,8 @@ public class Help extends Command {
 	@Override
 	public void onCommand(String[] args, String command) {
 		Client.addChatMessage(
-				"\n" + Client.nameWithClient + " " + Client.version
-				+ "\n" + "---------------------"
+				//"\n" + Client.nameWithClient + " " + Client.version
+				"\n" + "---------------------"
 				+ "\n" + "Avalible commands:"
 				+ "\n"
 				+ "\n" + "Help - displays this command: .h/.help "
