@@ -9,7 +9,7 @@ import moonlight.modules.Module;
 public class Bind extends Command {
 	
 	public Bind() {
-		super("Bind", "Binds a module by name", "bind <name>/<all> <key> | clear", "b");
+		super("Bind", "Binds a module by name", "bind <name>/<all> <key>/<clear>", "b");
 	}
 
 	@Override
@@ -18,6 +18,13 @@ public class Bind extends Command {
 		if(args.length == 2) {
 			String moduleName = args[0];
 			String keyName = args[1];
+			
+			if (moduleName.equalsIgnoreCase("all") && keyName.equalsIgnoreCase("clear")) {
+				for(Module module : Client.modules) {
+					module.keyCode.setKeyCode(Keyboard.KEY_NONE);
+				}
+				Client.addChatMessage("Cleared binds for all modules.");
+			}
 			
 			boolean foundModule = false;
 			for(Module module : Client.modules) {
@@ -33,19 +40,7 @@ public class Bind extends Command {
 			
 			if(!foundModule) {
 				Client.addChatMessage("Couldn't find module.");
-			}
-		}
-		
-		//1 parameter -> clears bind for all modules
-		if(args.length == 1) {
-			if(args[0].equalsIgnoreCase("clear")) {
-				for(Module module : Client.modules) {
-					module.keyCode.setKeyCode(Keyboard.KEY_NONE);
-				}
-				Client.addChatMessage("Cleared all binds.");
-			}
-			else {
-				Client.addChatMessage("Invalid parameter(s). Type .h for help.");
+				return;
 			}
 		}
 	}
