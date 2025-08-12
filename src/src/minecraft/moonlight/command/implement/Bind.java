@@ -35,6 +35,12 @@ public class Bind extends Command {
 			
 			for(Module module : Client.modules) {
 				if(module.name.equalsIgnoreCase(moduleName)) {
+					if (keyName.equalsIgnoreCase("clear")) {
+						module.keyCode.setKeyCode(Keyboard.KEY_NONE);
+						Client.addChatMessage(String.format("Cleared bind for %s", module.name));
+						return;
+					}
+					
 					module.keyCode.setKeyCode(Keyboard.getKeyIndex(keyName.toUpperCase()));
 					Client.addChatMessage(String.format("Bound %s to %s", module.name, Keyboard.getKeyName(module.getKey())));
 					return;
