@@ -9,7 +9,7 @@ import moonlight.modules.Module;
 public class Bind extends Command {
 	
 	public Bind() {
-		super("Bind", "Binds a module by name", "bind <name>/<all> <key>/<clear>", "b");
+		super("Bind", "Binds a module by name", "bind <module name>/<all> <key>/<clear>", "b");
 	}
 
 	@Override
@@ -19,17 +19,23 @@ public class Bind extends Command {
 			String moduleName = args[0];
 			String keyName = args[1];
 			
-			if (moduleName.equalsIgnoreCase("all") && keyName.equalsIgnoreCase("clear")) {
-				for(Module module : Client.modules) {
-					module.keyCode.setKeyCode(Keyboard.KEY_NONE);
+			if (moduleName.equalsIgnoreCase("all")) {
+				if (keyName.equalsIgnoreCase("clear")) {
+					for(Module module : Client.modules) {
+						module.keyCode.setKeyCode(Keyboard.KEY_NONE);
+					}
+					
+					Client.addChatMessage("Cleared binds for all modules.");
+					return;
 				}
-				Client.addChatMessage("Cleared binds for all modules.");
+				
+				Client.addChatMessage("You can't bind all modules to a single key.");
+				return;
 			}
 			
 			boolean foundModule = false;
 			for(Module module : Client.modules) {
 				if(module.name.equalsIgnoreCase(moduleName)) {
-					
 					module.keyCode.setKeyCode(Keyboard.getKeyIndex(keyName.toUpperCase()));
 					Client.addChatMessage(String.format("Bound %s to %s", module.name, Keyboard.getKeyName(module.getKey())));
 					
