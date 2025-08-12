@@ -33,21 +33,16 @@ public class Bind extends Command {
 				return;
 			}
 			
-			boolean foundModule = false;
 			for(Module module : Client.modules) {
 				if(module.name.equalsIgnoreCase(moduleName)) {
 					module.keyCode.setKeyCode(Keyboard.getKeyIndex(keyName.toUpperCase()));
 					Client.addChatMessage(String.format("Bound %s to %s", module.name, Keyboard.getKeyName(module.getKey())));
-					
-					foundModule = true;
-					break;
+					return;
 				}
 			}
 			
-			if(!foundModule) {
-				Client.addChatMessage("Couldn't find module.");
-				return;
-			}
+			Client.addChatMessage("Couldn't find module.");
+			return;
 		}
 	}
 }
