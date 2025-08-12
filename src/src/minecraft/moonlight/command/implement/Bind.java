@@ -9,7 +9,7 @@ import moonlight.modules.Module;
 public class Bind extends Command {
 	
 	public Bind() {
-		super("Bind", "Binds a module by name", "bind <name> <key> | clear", "b");
+		super("Bind", "Binds a module by name", "bind <name>/<all> <key> | clear", "b");
 	}
 
 	@Override
@@ -20,7 +20,6 @@ public class Bind extends Command {
 			String keyName = args[1];
 			
 			boolean foundModule = false;
-			
 			for(Module module : Client.modules) {
 				if(module.name.equalsIgnoreCase(moduleName)) {
 					
@@ -37,7 +36,7 @@ public class Bind extends Command {
 			}
 		}
 		
-		//1 parameter -> clears bind for module
+		//1 parameter -> clears bind for all modules
 		if(args.length == 1) {
 			if(args[0].equalsIgnoreCase("clear")) {
 				for(Module module : Client.modules) {
