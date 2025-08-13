@@ -6,7 +6,7 @@ import java.util.List;
 
 public abstract class Command {
 	
-	//One commands required parameters
+	//A commands required parameters
 	public String name, description, syntax;
 	public List<String> aliases = new ArrayList<String>();
 	

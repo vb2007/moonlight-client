@@ -14,14 +14,14 @@ import moonlight.events.listeners.EventChat;
 public class CommandManager {
 
 	public List<Command> commands = new ArrayList<Command>();
-	// TODO: mikor a játékos fellép egy szerverre / egyjátékos világba, a kliens kiírhatja, hogy "you can get command info with .help" vagy valami
+	// TODO: mikor a jï¿½tï¿½kos fellï¿½p egy szerverre / egyjï¿½tï¿½kos vilï¿½gba, a kliens kiï¿½rhatja, hogy "you can get command info with .help" vagy valami
 	public String prefix = ".";
 	
 	public CommandManager() {
 		setup();
 	}
 	
-	//command import a command.implement-bõl
+	//command import a command.implement-bï¿½l
 	public void setup() {
 		commands.add(new Toggle());
 		commands.add(new Bind());
@@ -32,12 +32,11 @@ public class CommandManager {
 	public void handleChat(EventChat event) {
 		String message = event.getMessage();
 		
-		//ha az üzenet nem a prefixel kezdõdik akkor leszarjuk
 		if(!message.startsWith(prefix)) {
 			return;
 		}
 		
-		//nem küldi el chatbe az üzenetet, csak a konzolos parancsot hatja végre
+		//nem kï¿½ldi el chatbe az ï¿½zenetet, csak a konzolos parancsot hatja vï¿½gre
 		event.setCancelled(true);
 		
 		message = message.substring(prefix.length());
