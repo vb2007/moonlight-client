@@ -14,8 +14,8 @@ public class Help extends Command {
 		Client.addChatMessage(
 				//"\n" + Client.nameWithClient + " " + Client.version
 				"\n" + "---------------------"
-				+ "\n" + "Avalible commands:"
-				+ "\n"
+				//+ "\n" + "Available commands:"
+				//+ "\n"
 				+ "\n" + "Help - displays this command: .h/.help "
 				+ "\n" + "Toggle - toggles a module: .t/.toggle <cheat name>"
 				+ "\n" + "Bind - binds a module to a key: .b/.bind <cheat name> <key> / <clear>"
