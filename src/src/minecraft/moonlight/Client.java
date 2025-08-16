@@ -12,10 +12,11 @@ import moonlight.events.listeners.EventChat;
 import moonlight.events.listeners.EventKey;
 import moonlight.modules.Module;
 import moonlight.modules.Module.Category;
-import moonlight.modules.combat.KillAura;
+import moonlight.modules.combat.*;
 import moonlight.modules.movement.*;
 import moonlight.modules.player.*;
 import moonlight.modules.render.*;
+import moonlight.modules.world.*;
 import moonlight.ui.HUD;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
@@ -43,6 +44,7 @@ public class Client {
 		modules.add(new Fullbright());
 		modules.add(new NoFall());
 		modules.add(new KillAura());
+		modules.add(new Timer());
 	}
 	
 	public static void onEvent(Event e) {
