@@ -2,8 +2,8 @@ package moonlight.modules.render;
 
 import org.lwjgl.input.Keyboard;
 
-import moonlight.events.Event;
-import moonlight.events.listeners.EventUpdate;
+//import moonlight.events.Event;
+//import moonlight.events.listeners.EventUpdate;
 import moonlight.modules.Module;
 
 public class Fullbright extends Module {
