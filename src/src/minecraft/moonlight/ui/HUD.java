@@ -1,14 +1,11 @@
 package moonlight.ui;
 
-import java.util.Collections;
 import java.util.Comparator;
 
-import org.lwjgl.util.Color;
-
 import moonlight.Client;
+import moonlight.events.listeners.EventRenderGUI;
 import moonlight.modules.Module;
 import moonlight.util.ColorUtil;
-import moonlight.events.listeners.EventRenderGUI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
