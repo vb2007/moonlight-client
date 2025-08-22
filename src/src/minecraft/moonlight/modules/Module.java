@@ -69,7 +69,8 @@ public class Module {
 		COMBAT("Combat"),
 		MOVEMENT("Movement"),
 		PLAYER("Player"),
-		RENDER("Render");
+		RENDER("Render"),
+		WORLD("World");
 		
 		public String name;
 		public int moduleIndex;
